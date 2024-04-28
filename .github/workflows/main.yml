@@ -1,0 +1,14 @@
+name: Server Deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build_and_deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+      - name: Build Images
+        run: docker compose up -d --build
