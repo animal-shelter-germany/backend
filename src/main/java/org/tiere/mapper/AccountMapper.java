@@ -14,7 +14,7 @@ public class AccountMapper {
     }
 
     public static Account map(AccountEntity account) {
-        return new Account(account.id, account.getEmail());
+        return new Account(account.getId(), account.getEmail());
     }
 
 }

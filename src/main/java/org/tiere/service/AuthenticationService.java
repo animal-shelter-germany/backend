@@ -20,7 +20,7 @@ public class AuthenticationService {
     }
 
     public AccountEntity requireAccount() {
-        return accountRepo.findByIdOptional(Long.parseLong(jsonWebToken.getName())).orElseThrow(() -> new UnauthorizedException());
+        return accountRepo.findByIdOptional(Integer.parseInt(jsonWebToken.getName())).orElseThrow(() -> new UnauthorizedException());
     }
 
 }

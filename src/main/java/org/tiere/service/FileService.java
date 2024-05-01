@@ -21,13 +21,13 @@ public class FileService {
         this.fileRepo = fileRepo;
     }
 
-    public FileDetails findById(long id) throws IOException {
+    public FileDetails findById(int id) throws IOException {
         FileEntity fileEntity = fileRepo.findById(id);
         File file = new File(UUID.randomUUID().toString());
         try(FileOutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(fileEntity.getContent());
         }
-        return new FileDetails(fileEntity.getExtension(), file);
+        return new FileDetails(fileEntity.getMimeType(), file);
     }
 
 }

@@ -20,7 +20,7 @@ public class AccountService {
     }
 
     public Account find() {
-        return AccountMapper.map(accountRepo.findById(Long.parseLong(jsonWebToken.getName())));
+        return AccountMapper.map(accountRepo.findById(Integer.parseInt(jsonWebToken.getName())));
     }
 
 }
