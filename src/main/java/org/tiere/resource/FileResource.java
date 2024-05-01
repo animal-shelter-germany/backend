@@ -24,9 +24,9 @@ public class FileResource {
 
     @GET
     @Produces
-    public Response get(@PathParam("id") long fileId) throws IOException {
+    public Response get(@PathParam("id") int fileId) throws IOException {
         FileDetails fileDetails = fileService.findById(fileId);
-        return Response.ok(fileDetails.file()).header("Content-Type", ContentType.find(fileDetails.extension())).build();
+        return Response.ok(fileDetails.file()).header("Content-Type", fileDetails.mimeType()).build();
     }
 
 }

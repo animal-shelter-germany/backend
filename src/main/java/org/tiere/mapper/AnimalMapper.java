@@ -12,7 +12,7 @@ public class AnimalMapper {
     }
 
     public static Animal map(AnimalEntity animal) {
-        return new Animal(animal.getName());
+        return new Animal(animal.getName(), BirthdayMapper.map(animal.getBirthday()));
     }
 
 }

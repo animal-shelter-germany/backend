@@ -1,17 +1,18 @@
 package org.tiere.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
-import org.hibernate.annotations.Type;
-import org.tiere.dto.Listing;
-
-import java.util.List;
 
 @Entity
 @Table(name = "file")
-public class FileEntity extends PanacheEntity {
+public class FileEntity extends PanacheEntityBase {
 
-    private String extension;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "mime_type")
+    private String mimeType;
 
     @Column(columnDefinition = "text")
     private byte[] content;
@@ -19,6 +20,14 @@ public class FileEntity extends PanacheEntity {
     @ManyToOne
     @JoinColumn(name = "listing_id")
     private ListingEntity listing;
+
+    public FileEntity() {
+    }
+
+    public FileEntity(String mimeType, byte[] content) {
+        this.mimeType = mimeType;
+        this.content = content;
+    }
 
     public byte[] getContent() {
         return content;
@@ -28,12 +37,12 @@ public class FileEntity extends PanacheEntity {
         this.content = content;
     }
 
-    public String getExtension() {
-        return extension;
+    public String getMimeType() {
+        return mimeType;
     }
 
-    public void setExtension(String extension) {
-        this.extension = extension;
+    public void setMimeType(String extension) {
+        this.mimeType = extension;
     }
 
     public ListingEntity getListing() {
@@ -42,5 +51,13 @@ public class FileEntity extends PanacheEntity {
 
     public void setListing(ListingEntity listing) {
         this.listing = listing;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

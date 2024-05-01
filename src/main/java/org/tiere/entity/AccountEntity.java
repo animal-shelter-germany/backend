@@ -1,16 +1,18 @@
 package org.tiere.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "account")
-public class AccountEntity extends PanacheEntity {
+public class AccountEntity extends PanacheEntityBase {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     private String email;
 
@@ -42,5 +44,13 @@ public class AccountEntity extends PanacheEntity {
 
     public void setListings(List<ListingEntity> listings) {
         this.listings = listings;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

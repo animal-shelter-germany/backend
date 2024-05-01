@@ -9,20 +9,36 @@ import java.util.List;
 
 @Entity
 @Table(name = "listing")
-public class ListingEntity extends PanacheEntity {
+public class ListingEntity extends PanacheEntityBase {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Enumerated(EnumType.STRING)
     private ListingType type;
 
-    @OneToMany(mappedBy = "listing")
+    @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL)
     private List<AnimalEntity> animals;
 
-    @OneToMany(mappedBy = "listing", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "listing", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<FileEntity> files;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
     private AccountEntity account;
+
+    public ListingEntity() {
+    }
+
+    public ListingEntity(ListingType type, List<AnimalEntity> animals, List<FileEntity> files, AccountEntity account) {
+        animals.forEach(item -> item.setListing(this));
+        files.forEach(item -> item.setListing(this));
+        this.type = type;
+        this.animals = animals;
+        this.files = files;
+        this.account = account;
+    }
 
     public List<AnimalEntity> getAnimals() {
         return animals;
@@ -54,5 +70,13 @@ public class ListingEntity extends PanacheEntity {
 
     public void setAccount(AccountEntity account) {
         this.account = account;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

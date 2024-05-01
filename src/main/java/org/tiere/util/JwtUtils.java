@@ -13,7 +13,7 @@ public class JwtUtils {
 
     public String generate(AccountEntity user) {
         LocalDateTime expiresAt = LocalDateTime.now().plusMonths(1);
-        return Jwt.upn(String.valueOf(user.id)).expiresAt(expiresAt.toInstant(ZoneOffset.UTC)).sign();
+        return Jwt.upn(String.valueOf(user.getId())).expiresAt(expiresAt.toInstant(ZoneOffset.UTC)).sign();
     }
 
 }
