@@ -6,21 +6,17 @@ import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.tiere.dto.Listing;
 import org.tiere.dto.ListingCreation;
-import org.tiere.entity.AnimalEntity;
-import org.tiere.entity.BirthdayEntity;
-import org.tiere.entity.FileEntity;
-import org.tiere.entity.ListingEntity;
+import org.tiere.entity.*;
 import org.tiere.mapper.ListingMapper;
 import org.tiere.repo.ListingRepo;
+import org.tiere.util.ListingType;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @ApplicationScoped
 public class ListingService {
@@ -47,6 +43,27 @@ public class ListingService {
         List<AnimalEntity> animalEntities = listing.animals().stream().map(item -> new AnimalEntity(item.name(), new BirthdayEntity(item.birthday().year(), item.birthday().month(), item.birthday().day()))).toList();
         ListingEntity listingEntity = new ListingEntity(listing.type(), animalEntities, base64ToFile(listing.files()), authenticationService.requireAccount());
         listingRepo.persist(listingEntity);
+    }
+
+    public List<Listing> search() {
+        SearchEntity search = new SearchEntity(ListingType.CAT);
+        StringBuilder query = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
+
+        ListingType listingType = search.getListingType();
+        if(listingType != null) {
+            appendToQuery(query, params, "type",listingType);
+        }
+
+        return ListingMapper.map(listingRepo.find(query.toString(), params).list());
+    }
+
+    private void appendToQuery(StringBuilder query, Map<String, Object> params, String field, Object param) {
+        if(!query.isEmpty()) {
+            query.append(" and ");
+        }
+        query.append(field).append("=:").append(field);
+        params.put(field, param);
     }
 
     public List<Listing> findByAccount() {
