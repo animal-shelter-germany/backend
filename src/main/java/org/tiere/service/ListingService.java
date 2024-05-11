@@ -76,6 +76,11 @@ public class ListingService {
         params.put(field, param);
     }
 
+    @Transactional
+    public void delete(Integer listingId) {
+        listingRepo.delete(listingRepo.findById(listingId));
+    }
+
     public List<Listing> findByAccount() {
         return ListingMapper.map(listingRepo.findByAccount(authenticationService.requireAccount()));
     }
@@ -105,5 +110,9 @@ public class ListingService {
             return fractions[1];
         }
         throw new RuntimeException();
+    }
+
+    public List<Listing> findLatest(int count) {
+        return ListingMapper.map(listingRepo.findLatest(count));
     }
 }
