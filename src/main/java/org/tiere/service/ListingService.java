@@ -40,8 +40,18 @@ public class ListingService {
 
     @Transactional
     public void save(ListingCreation listing) throws IOException {
-        List<AnimalEntity> animalEntities = listing.animals().stream().map(item -> new AnimalEntity(item.name(), new BirthdayEntity(item.birthday().year(), item.birthday().month(), item.birthday().day()))).toList();
-        ListingEntity listingEntity = new ListingEntity(listing.type(), animalEntities, base64ToFile(listing.files()), authenticationService.requireAccount());
+        List<AnimalEntity> animalEntities = listing.animals().
+            stream().map(item -> new AnimalEntity(item.name(), item.sex(), item.steril(), new BirthdayEntity(item.birthday().year(), item.birthday().month(), item.birthday().day())))
+            .toList();
+        ListingEntity listingEntity = new ListingEntity(
+            listing.type(),
+            animalEntities,
+            base64ToFile(listing.files()),
+            authenticationService.requireAccount(),
+            new AddressEntity(
+                listing.address().zip(),
+                listing.address().city())
+        );
         listingRepo.persist(listingEntity);
     }
 
