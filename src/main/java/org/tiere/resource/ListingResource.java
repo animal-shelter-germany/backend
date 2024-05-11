@@ -29,6 +29,14 @@ public class ListingResource {
     }
 
     @GET
+    @Path("/latest/{count}")
+    @Consumes
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Listing> getLatest(@PathParam("count") int count) {
+        return listingService.findLatest(count);
+    }
+
+    @GET
     @Path("/{listingId}")
     @Consumes
     @Produces(MediaType.APPLICATION_JSON)
@@ -49,6 +57,14 @@ public class ListingResource {
     @Produces
     public void post(ListingCreation listing) throws IOException {
         listingService.save(listing);
+    }
+
+    @DELETE
+    @Path("/{listingId}")
+    @Consumes
+    @Produces
+    public void delete(@PathParam("listingId") Integer listingId) {
+        listingService.delete(listingId);
     }
 
 }

@@ -16,4 +16,8 @@ public class ListingRepo implements PanacheRepositoryBase<ListingEntity, Integer
         return find("account", account).list();
     }
 
+    public List<ListingEntity> findLatest(int count) {
+        return findAll().page(0, count).list();
+    }
+
 }
