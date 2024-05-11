@@ -28,16 +28,21 @@ public class ListingEntity extends PanacheEntityBase {
     @JoinColumn(name = "account_id")
     private AccountEntity account;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private AddressEntity address;
+
     public ListingEntity() {
     }
 
-    public ListingEntity(ListingType type, List<AnimalEntity> animals, List<FileEntity> files, AccountEntity account) {
+    public ListingEntity(ListingType type, List<AnimalEntity> animals, List<FileEntity> files, AccountEntity account, AddressEntity address) {
         animals.forEach(item -> item.setListing(this));
         files.forEach(item -> item.setListing(this));
         this.type = type;
         this.animals = animals;
         this.files = files;
         this.account = account;
+        this.address = address;
     }
 
     public List<AnimalEntity> getAnimals() {
@@ -78,5 +83,13 @@ public class ListingEntity extends PanacheEntityBase {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public AddressEntity getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressEntity address) {
+        this.address = address;
     }
 }

@@ -17,6 +17,10 @@ public class AnimalEntity extends PanacheEntityBase {
     @Column(name = "animal_name")
     private String name;
 
+    private String sex;
+
+    private Boolean steril;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "birthday_id")
     private BirthdayEntity birthday;
@@ -27,9 +31,11 @@ public class AnimalEntity extends PanacheEntityBase {
     public AnimalEntity() {
     }
 
-    public AnimalEntity(String name, BirthdayEntity birthday) {
+    public AnimalEntity(String name, String sex, Boolean steril, BirthdayEntity birthday) {
         birthday.setAnimal(this);
         this.name = name;
+        this.sex = sex;
+        this.steril = steril;
         this.birthday = birthday;
     }
 
@@ -63,5 +69,21 @@ public class AnimalEntity extends PanacheEntityBase {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public Boolean getSteril() {
+        return steril;
+    }
+
+    public void setSteril(Boolean steril) {
+        this.steril = steril;
     }
 }

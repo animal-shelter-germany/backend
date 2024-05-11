@@ -14,7 +14,7 @@ public class ListingMapper {
     }
 
     public static Listing map(ListingEntity listing) {
-        return new Listing(listing.getId(), AnimalMapper.map(listing.getAnimals()), listing.getType(), listing.getFiles().stream().map(file -> file.getId()).toList());
+        return new Listing(listing.getId(), AnimalMapper.map(listing.getAnimals()), listing.getType(), listing.getFiles().stream().map(file -> file.getId()).toList(), AddressMapper.map(listing.getAddress()));
     }
 
 }
