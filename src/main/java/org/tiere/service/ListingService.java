@@ -3,19 +3,20 @@ package org.tiere.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.tiere.dto.Listing;
 import org.tiere.dto.ListingCreation;
+import org.tiere.dto.Search;
 import org.tiere.entity.*;
 import org.tiere.mapper.ListingMapper;
 import org.tiere.repo.ListingRepo;
+import org.tiere.repo.ZipCodeRepo;
 import org.tiere.util.ListingType;
+import org.tiere.util.query_builder.QueryBuilder;
+import org.tiere.util.query_builder.section.QueryCustomSection;
+import org.tiere.util.query_builder.section.QuerySection;
+import org.tiere.util.query_builder.util.Compartor;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 @ApplicationScoped
@@ -23,11 +24,13 @@ public class ListingService {
 
     private final ListingRepo listingRepo;
     private final AuthenticationService authenticationService;
+    private final ZipCodeRepo zipCodeRepo;
 
     @Inject
-    public ListingService(ListingRepo listingRepo, AuthenticationService authenticationService) {
+    public ListingService(ListingRepo listingRepo, AuthenticationService authenticationService, ZipCodeRepo zipCodeRepo) {
         this.listingRepo = listingRepo;
         this.authenticationService = authenticationService;
+        this.zipCodeRepo = zipCodeRepo;
     }
 
     public List<Listing> findAll() {
@@ -55,25 +58,40 @@ public class ListingService {
         listingRepo.persist(listingEntity);
     }
 
-    public List<Listing> search() {
-        SearchEntity search = new SearchEntity(ListingType.CAT);
-        StringBuilder query = new StringBuilder();
-        Map<String, Object> params = new HashMap<>();
+    public List<Listing> search(Search search) {
+        QueryBuilder<ListingEntity> queryBuilder = QueryBuilder.build();
 
-        ListingType listingType = search.getListingType();
+        ListingType listingType = search.listingType();
         if(listingType != null) {
-            appendToQuery(query, params, "type",listingType);
+            queryBuilder.add(QuerySection.of("type", Compartor.EQUAlS, listingType));
         }
 
-        return ListingMapper.map(listingRepo.find(query.toString(), params).list());
+        List<ListingEntity> result = queryBuilder.execute(listingRepo).list();
+
+        if(search.zip() != null && !search.zip().isBlank() && search.radius() != null) {
+            ZipCodeEntity requestedZip = zipCodeRepo.findByZipCode(search.zip());
+            List<ListingEntity> filteredByRadius = new LinkedList<>();
+            for(ListingEntity listing : result) {
+                ZipCodeEntity listingZip = zipCodeRepo.findByZipCode(listing.getAddress().getZip());
+                if(calculateDistance(requestedZip, listingZip) < search.radius()) {
+                    filteredByRadius.add(listing);
+                }
+            }
+            return ListingMapper.map(filteredByRadius);
+        }
+        return ListingMapper.map(result);
     }
 
-    private void appendToQuery(StringBuilder query, Map<String, Object> params, String field, Object param) {
-        if(!query.isEmpty()) {
-            query.append(" and ");
-        }
-        query.append(field).append("=:").append(field);
-        params.put(field, param);
+    public double calculateDistance(ZipCodeEntity from, ZipCodeEntity to) {
+        return calculateDistance(from.getLatitude(), to.getLatitude(), from.getLongitude(), to.getLongitude());
+    }
+
+    public double calculateDistance(Double lat0, Double lat1, Double long0, Double long1) {
+        double x1 = lat0*110.574;
+        double x2 = lat1*110.574;
+        double y1 = long0*111.195;
+        double y2 = long1*111.195;
+        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(Math.cos(0.5 * Math.PI * (lat0/90)) * (y1 - y2), 2));
     }
 
     @Transactional

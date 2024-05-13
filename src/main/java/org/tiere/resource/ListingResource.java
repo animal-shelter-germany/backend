@@ -6,6 +6,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.tiere.dto.Listing;
 import org.tiere.dto.ListingCreation;
+import org.tiere.dto.Search;
 import org.tiere.service.ListingService;
 
 import java.io.IOException;
@@ -57,6 +58,14 @@ public class ListingResource {
     @Produces
     public void post(ListingCreation listing) throws IOException {
         listingService.save(listing);
+    }
+
+    @POST
+    @Path("/search")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Listing> findBySearch(Search search) {
+        return listingService.search(search);
     }
 
     @DELETE
