@@ -10,6 +10,7 @@ import java.util.*;
 
 public class QueryBuilder<E> {
 
+    private String head;
     private final List<QueryElement> querySections;
     private final Map<String, Object> params;
 
@@ -17,9 +18,18 @@ public class QueryBuilder<E> {
         return new QueryBuilder<E>();
     }
 
+    public QueryBuilder<E> head(String head) {
+        this.head = head;
+        return this;
+    }
+
     private QueryBuilder() {
         querySections = new LinkedList<>();
         params = new HashMap<>();
+    }
+
+    public QueryBuilder<E> head() {
+        return this;
     }
 
     public QueryBuilder<E> add(QueryCustomSection queryCustomSection) {
@@ -47,12 +57,18 @@ public class QueryBuilder<E> {
     }
 
     public String buildQuery() {
-        StringBuilder query = new StringBuilder();
         Iterator<QueryElement> iterator = querySections.iterator();
+        StringBuilder query = new StringBuilder();
+        if(head != null) {
+            query.append(head);
+            if(iterator.hasNext()) {
+                query.append(" WHERE ");
+            }
+        }
         while(iterator.hasNext()) {
             query.append(iterator.next().toQuery());
             if(iterator.hasNext()) {
-               query.append(" and ");
+               query.append(" AND ");
             }
         }
         return query.toString();
