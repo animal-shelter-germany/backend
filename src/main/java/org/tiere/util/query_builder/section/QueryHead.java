@@ -37,9 +37,7 @@ public class QueryHead {
         stringBuilder.append("SELECT ");
         Map.Entry<String, String> main = mainEntity.entrySet().iterator().next();
         stringBuilder.append(main.getKey()).append(" AS ").append(main.getValue());
-        for() {
 
-        }
         return stringBuilder.toString();
     }
 
