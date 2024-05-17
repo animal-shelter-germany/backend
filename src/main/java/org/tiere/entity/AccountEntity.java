@@ -2,9 +2,11 @@ package org.tiere.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.vertx.core.eventbus.Message;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "account")
@@ -27,6 +29,12 @@ public class AccountEntity extends PanacheEntityBase {
 
     @OneToMany(mappedBy = "account")
     private List<ListingEntity> listings;
+
+    @OneToMany(mappedBy = "sender")
+    private List<MessageEntity> sentMessages;
+
+    @OneToMany(mappedBy = "receiver")
+    private List<MessageEntity> receivedMessages;
 
     public String getEmail() {
         return email;
@@ -74,5 +82,29 @@ public class AccountEntity extends PanacheEntityBase {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public List<MessageEntity> getSentMessages() {
+        return sentMessages;
+    }
+
+    public void setSentMessages(List<MessageEntity> sentMessages) {
+        this.sentMessages = sentMessages;
+    }
+
+    public List<MessageEntity> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(List<MessageEntity> receivedMessages) {
+        this.receivedMessages = receivedMessages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountEntity that = (AccountEntity) o;
+        return id == that.id;
     }
 }
