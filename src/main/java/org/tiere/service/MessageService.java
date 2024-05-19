@@ -33,10 +33,11 @@ public class MessageService {
     }
 
     @Transactional
-    public void save(int opponentId, MessageCreation message) {
+    public Message save(int opponentId, MessageCreation message) {
         AccountEntity user = authenticationService.requireAccount();
         AccountEntity opponent = accountRepo.findById(opponentId);
         MessageEntity messageEntity = new MessageEntity(user, opponent, message.message());
-        messageRepo.persist(messageEntity);
+        messageEntity.persist();
+        return MessageMapper.map(messageEntity);
     }
 }
