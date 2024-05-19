@@ -29,9 +29,9 @@ public class MessageResource {
     @POST
     @Path("/{userId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces
-    public void post(@PathParam("userId") int opponentId, MessageCreation message) {
-        messageService.save(opponentId, message);
+    @Produces(MediaType.APPLICATION_JSON)
+    public Message post(@PathParam("userId") int opponentId, MessageCreation message) {
+        return messageService.save(opponentId, message);
     }
 
 }

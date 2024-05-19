@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.tiere.dto.Account;
+import org.tiere.dto.AccountUpdate;
 import org.tiere.entity.AccountEntity;
 import org.tiere.mapper.AccountMapper;
 import org.tiere.repo.AccountRepo;
@@ -35,4 +36,12 @@ public class AccountService {
         accountRepo.persist(account);
     }
 
+    @Transactional
+    public void update(AccountUpdate account) {
+        AccountEntity accountEntity = authenticationService.requireAccount();
+        accountEntity.setEmail(account.email());
+        accountEntity.setFirstName(account.firstName());
+        accountEntity.setLastName(account.lastName());
+        accountEntity.persist();
+    }
 }
