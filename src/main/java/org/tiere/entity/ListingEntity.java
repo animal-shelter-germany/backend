@@ -3,6 +3,7 @@ package org.tiere.entity;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import org.tiere.util.ListingStatus;
 import org.tiere.util.ListingType;
 
 import java.util.List;
@@ -17,6 +18,9 @@ public class ListingEntity extends PanacheEntityBase {
 
     @Enumerated(EnumType.STRING)
     private ListingType type;
+
+    @Enumerated(EnumType.STRING)
+    private ListingStatus status;
 
     @OneToMany(mappedBy = "listing", cascade = CascadeType.ALL)
     private List<AnimalEntity> animals;
@@ -59,6 +63,14 @@ public class ListingEntity extends PanacheEntityBase {
 
     public void setType(ListingType type) {
         this.type = type;
+    }
+
+    public ListingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ListingStatus status) {
+        this.status = status;
     }
 
     public List<FileEntity> getFiles() {

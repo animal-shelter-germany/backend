@@ -26,6 +26,16 @@ public class MessageEntity extends PanacheEntityBase {
     @Column(name = "sent_at")
     private LocalDateTime sentAt;
 
+    public MessageEntity() {
+    }
+
+    public MessageEntity(AccountEntity sender, AccountEntity receiver, String message) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
+        this.sentAt = LocalDateTime.now();
+    }
+
     public long getId() {
         return id;
     }

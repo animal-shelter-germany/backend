@@ -1,9 +1,7 @@
 package org.tiere.resource;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.tiere.dto.Account;
@@ -23,6 +21,14 @@ public class AccountResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Account get() {
         return accountService.find();
+    }
+
+    @PUT
+    @Path("/me/password")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces
+    public void put(String password) {
+        accountService.setPassword(password);
     }
 
 }
