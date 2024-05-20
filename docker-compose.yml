@@ -1,14 +1,14 @@
 version: '3.8'
+name: ${NAME}
 
 services:
   animal-shelter-backend:
     build: .
-    container_name: animal-shelter-backend
+    container_name: animal-shelter-backend-${NAME}
     networks:
       - animal-shelter
 
-
 networks:
   animal-shelter:
-    name: animal-shelter
+    name: ${NETWORK}
     external: true
