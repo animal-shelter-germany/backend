@@ -7,8 +7,11 @@ on:
 jobs:
   build_and_deploy:
     runs-on: self-hosted
+    env:
+      NAME: dev
+      NETWORK: animal-shelter-dev
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
       - name: Build Images
-        run: docker compose -f docker-compose-dev.yml up -d --build
+        run: docker compose up -d --build

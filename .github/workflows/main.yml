@@ -7,6 +7,9 @@ on:
 jobs:
   build_and_deploy:
     runs-on: self-hosted
+    env:
+      NAME: prod
+      NETWORK: animal-shelter
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
