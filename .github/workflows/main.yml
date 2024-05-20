@@ -10,6 +10,7 @@ jobs:
     env:
       NAME: prod
       NETWORK: animal-shelter
+      ORIGINS: https://www.pawparadise24.de
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
