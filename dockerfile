@@ -1,5 +1,7 @@
 FROM gradle:8.6.0-jdk21 AS build-stage
 
+ARG ORIGINS
+
 WORKDIR /app/home/
 COPY . .
 RUN gradle build

@@ -3,7 +3,11 @@ name: ${NAME}
 
 services:
   animal-shelter-backend:
-    build: .
+    build:
+      context: .
+      dockerfile: dockerfile
+      args:
+        - ORIGINS=${ORIGINS}
     container_name: animal-shelter-backend-${NAME}
     networks:
       - animal-shelter
