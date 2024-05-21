@@ -10,6 +10,7 @@ jobs:
     env:
       NAME: dev
       NETWORK: animal-shelter-dev
+      ORIGINS: https://dev.pawparadise24.de
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2
