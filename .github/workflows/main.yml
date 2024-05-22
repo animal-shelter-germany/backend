@@ -8,9 +8,8 @@ jobs:
   build_and_deploy:
     runs-on: self-hosted
     env:
-      NAME: prod
+      NAME: animal-shelter-backend
       NETWORK: animal-shelter
-      ORIGINS: https://www.pawparadise24.de
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v2

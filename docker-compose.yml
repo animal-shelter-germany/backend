@@ -4,7 +4,7 @@ name: ${NAME}
 services:
   animal-shelter-backend:
     build: .
-    container_name: animal-shelter-backend-${NAME}
+    container_name: animal-shelter-backend
     networks:
       - animal-shelter
 
