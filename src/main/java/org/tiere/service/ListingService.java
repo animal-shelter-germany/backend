@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.tiere.dto.Listing;
 import org.tiere.dto.ListingCreation;
+import org.tiere.dto.ListingUpdate;
 import org.tiere.dto.Search;
 import org.tiere.entity.*;
 import org.tiere.mapper.ListingMapper;
@@ -132,5 +133,13 @@ public class ListingService {
 
     public List<Listing> findLatest(int count) {
         return ListingMapper.map(listingRepo.findLatest(count));
+    }
+
+    @Transactional
+    public void update(int listingId, ListingUpdate listing) {
+        ListingEntity existing = listingRepo.findById(listingId);
+        existing.setType(listing.type());
+        existing.setStatus(listing.status());
+        listingRepo.persistAndFlush(existing);
     }
 }
