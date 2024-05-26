@@ -37,6 +37,10 @@ public class AnimalService {
         AnimalEntity existing = animalRepo.findById(id);
         existing.setName(animal.name());
         existing.setSex(animal.sex());
+        existing.setSteril(animal.steril());
+        existing.getBirthday().setYear(animal.birthday().year());
+        existing.getBirthday().setMonth(animal.birthday().month());
+        existing.getBirthday().setDay(animal.birthday().day());
         animalRepo.persistAndFlush(existing);
     }
 
