@@ -6,6 +6,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.tiere.dto.Listing;
 import org.tiere.dto.ListingCreation;
+import org.tiere.dto.ListingUpdate;
 import org.tiere.dto.Search;
 import org.tiere.service.ListingService;
 
@@ -74,6 +75,14 @@ public class ListingResource {
     @Produces
     public void delete(@PathParam("listingId") Integer listingId) {
         listingService.delete(listingId);
+    }
+
+    @PUT
+    @Path("/{listingId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces
+    public void update(@PathParam("listingId") int listingId, ListingUpdate listing) {
+        listingService.update(listingId,  listing);
     }
 
 }
