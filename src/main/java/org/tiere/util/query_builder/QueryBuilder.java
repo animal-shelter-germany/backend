@@ -28,10 +28,6 @@ public class QueryBuilder<E> {
         params = new HashMap<>();
     }
 
-    public QueryBuilder<E> head() {
-        return this;
-    }
-
     public QueryBuilder<E> add(QueryCustomSection queryCustomSection) {
         querySections.add(queryCustomSection);
         for(Map.Entry<String, Object> entry : queryCustomSection.getParams().entrySet()) {
@@ -52,8 +48,12 @@ public class QueryBuilder<E> {
         return this;
     }
 
-    public PanacheQuery<E> execute(PanacheRepositoryBase<E, ?> repository) {
+    public PanacheQuery<E> find(PanacheRepositoryBase<E, ?> repository) {
         return repository.find(buildQuery(), params);
+    }
+
+    public Long count(PanacheRepositoryBase<E, ?> repository) {
+        return repository.count(buildQuery(), params);
     }
 
     public String buildQuery() {
