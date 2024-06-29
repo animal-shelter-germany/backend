@@ -67,7 +67,7 @@ public class ListingService {
             queryBuilder.add(QuerySection.of("type", Compartor.EQUAlS, listingType));
         }
 
-        List<ListingEntity> result = queryBuilder.execute(listingRepo).list();
+        List<ListingEntity> result = queryBuilder.find(listingRepo).list();
 
         if(search.zip() != null && !search.zip().isBlank() && search.radius() != null) {
             ZipCodeEntity requestedZip = zipCodeRepo.findByZipCode(search.zip());
