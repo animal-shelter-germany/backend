@@ -36,6 +36,9 @@ public class AccountEntity extends PanacheEntityBase {
     @OneToMany(mappedBy = "receiver")
     private List<MessageEntity> receivedMessages;
 
+    @OneToMany(mappedBy = "requestor")
+    private List<AdoptionEntity> adoptions;
+
     public String getEmail() {
         return email;
     }
@@ -98,6 +101,14 @@ public class AccountEntity extends PanacheEntityBase {
 
     public void setReceivedMessages(List<MessageEntity> receivedMessages) {
         this.receivedMessages = receivedMessages;
+    }
+
+    public List<AdoptionEntity> getAdoptions() {
+        return adoptions;
+    }
+
+    public void setAdoptions(List<AdoptionEntity> adoptions) {
+        this.adoptions = adoptions;
     }
 
     @Override
